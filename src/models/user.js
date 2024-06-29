@@ -34,11 +34,11 @@ export const User = sequelize.define("users", {
     allowNull: false,
     validate: {
       len: {
-        args: [4, 20],
-        msg: "Username must be between 4 and 20 characters long",
+        args: [4, 100],
+        msg: "Password must be between 4 and 40 characters long",
       },
       notNull: {
-        msg: "Username is required",
+        msg: "Password is required",
       },
     },
   },
