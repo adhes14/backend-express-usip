@@ -1,7 +1,7 @@
 import { DataTypes } from "sequelize";
 import { sequelize } from "../database/database.js";
 import { STATUS } from "../constantes/index.js";
-import { Tasks } from "./tasks.js";
+import { Task } from "./tasks.js";
 import logger from "../logs/logger.js";
 import { encrypt } from "../common/bcrypt.js";
 
@@ -58,12 +58,12 @@ export const User = sequelize.define("users", {
   },
 });
 
-User.hasMany(Tasks, {
+User.hasMany(Task, {
   foreignKey: "user_id",
   sourceKey: "id",
 });
 
-Tasks.belongsTo(User, {
+Task.belongsTo(User, {
   foreignKey: "user_id",
   targetKey: "id",
 });
