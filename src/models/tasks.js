@@ -8,20 +8,20 @@ export const Task = sequelize.define("tasks", {
     allowNull: false,
     primaryKey: true,
   },
-  description: {
+  name: {
     type: DataTypes.STRING,
     allowNull: false,
     validate: {
       len: {
         args: [1, 255],
-        msg: "Description must be between 1 and 255 characters long",
+        msg: "Name must be between 1 and 255 characters long",
       },
       notNull: {
-        msg: "Description is required",
+        msg: "Name is required",
       },
     },
   },
-  status: {
+  done: {
     type: DataTypes.BOOLEAN,
     allowNull: false,
     defaultValue: false,

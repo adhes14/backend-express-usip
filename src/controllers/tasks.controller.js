@@ -6,7 +6,7 @@ export async function getTasks(req, res) {
   const { userId } = req.user;
   try {
     const tasks = await Task.findAll({
-      attributes: ["id", "description", "status"],
+      attributes: ["id", "name", "done"],
       where: {
         user_id: userId,
       },
@@ -19,10 +19,10 @@ export async function getTasks(req, res) {
 }
 
 export async function createTasks(req, res) {
-  const { description } = req.body;
+  const { name } = req.body;
   const { userId } = req.user;
   try {
-    const task = await Task.create({ description, user_id: userId });
+    const task = await Task.create({ name, user_id: userId });
     return res.json(task);
   } catch (error) {
     logger.error(error.message);
@@ -35,7 +35,7 @@ export async function getTask(req, res) {
   const { userId } = req.user;
   try {
     const task = await Task.findOne({
-      attributes: ["description", "status"],
+      attributes: ["name", "done"],
       where: { id, user_id: userId },
     });
     if (task) {
@@ -51,14 +51,14 @@ export async function getTask(req, res) {
 
 export async function updateTask(req, res) {
   const { id } = req.params;
-  const { description } = req.body;
+  const { name } = req.body;
   const { userId } = req.user;
   try {
     const task = await Task.findOne({ where: { id, user_id: userId } });
     if (!task) {
       return res.status(404).json({ error: "Tarea no encontrada" });
     }
-    task.description = description;
+    task.name = name;
     await task.save();
     res.json(task);
   }
@@ -76,7 +76,7 @@ export async function taskDone(req, res) {
     if (!task) {
       return res.status(404).json({ error: "Tarea no encontrada" });
     }
-    task.status = true;
+    task.done = true;
     await task.save();
     res.json(task);
   }

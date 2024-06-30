@@ -116,8 +116,8 @@ export async function getTasks(req, res) {
       attributes: ["username"],
       include: {
         model: Task,
-        attributes: ["id", "description", "status"],
-        where: { status: false },
+        attributes: ["id", "name", "done"],
+        where: { done: false },
       },
     });
     if (user) {
