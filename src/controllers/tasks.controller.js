@@ -1,5 +1,5 @@
 import { Task } from "../models/tasks.js";
-import { authenticateToken } from "../middlewares/authenticate.middleware.js"
+import { authenticateToken } from "../middlewares/authenticate.middleware.js";
 import logger from "../logs/logger.js";
 
 export async function getTasks(req, res) {
@@ -42,8 +42,7 @@ export async function getTask(req, res) {
       return res.json(task);
     }
     res.status(404).json({ error: "Task not found" });
-  }
-  catch (error) {
+  } catch (error) {
     logger.error(error.message);
     res.status(500).json({ error: error.message });
   }
@@ -60,9 +59,8 @@ export async function updateTask(req, res) {
     }
     task.name = name;
     await task.save();
-    res.json(task);
-  }
-  catch (error) {
+    res.json([1]);
+  } catch (error) {
     logger.error(error.message);
     res.status(500).json({ error: error.message });
   }
@@ -78,9 +76,8 @@ export async function taskDone(req, res) {
     }
     task.done = true;
     await task.save();
-    res.json(task);
-  }
-  catch (error) {
+    res.json([1]);
+  } catch (error) {
     logger.error(error.message);
     res.status(500).json({ error: error.message });
   }
@@ -95,9 +92,8 @@ export async function deleteTask(req, res) {
       return res.status(404).json({ error: "Tarea no encontrada" });
     }
     await task.destroy();
-    res.json(task);
-  }
-  catch (error) {
+    res.sendStatus(204);
+  } catch (error) {
     logger.error(error.message);
     res.status(500).json({ error: error.message });
   }

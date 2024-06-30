@@ -6,7 +6,7 @@ import { User } from "../models/user.js";
 export async function getUsers(req, res) {
   try {
     const users = await User.findAll({
-      attributes: ["id", "username", "status"],
+      attributes: ["id", "username", "status", "password"],
       order: [["id", "ASC"]],
       where: {
         status: STATUS.ACTIVE,
@@ -62,7 +62,7 @@ export async function updateUser(req, res) {
     user.username = username;
     user.password = password;
     await user.save();
-    res.json(user);
+    res.json([1]);
   } catch (error) {
     logger.error(error.message);
     res.status(500).json({ error: error.message });
@@ -73,7 +73,7 @@ export async function activeInactive(req, res) {
   const { id } = req.params;
   const { status } = req.body;
   if (!status) {
-    return res.status(400).json({ error: "Falta el status" });
+    return res.status(400).json({ error: `El usuario ya se encuenta ${status}` });
   }
   try {
     const user = await User.findByPk(id);
@@ -101,7 +101,7 @@ export async function deleteUser(req, res) {
     }
     await Task.destroy({ where: { user_id: id } });
     await user.destroy();
-    res.json({ message: "Usuario eliminado" });
+    res.sendStatus(204);
   } catch (error) {
     logger.error(error.message);
     res.status(500).json({ error: error.message });
@@ -116,7 +116,7 @@ export async function getTasks(req, res) {
       attributes: ["username"],
       include: {
         model: Task,
-        attributes: ["id", "name", "done"],
+        attributes: ["name", "done"],
         where: { done: false },
       },
     });
